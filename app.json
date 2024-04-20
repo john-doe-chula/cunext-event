@@ -15,6 +15,14 @@
           "icon": "./assets/icon.png",
           "color": "#ffffff"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
       ]
     ],
     "icon": "./assets/CuEvent.png",

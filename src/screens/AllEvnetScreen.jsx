@@ -2,13 +2,15 @@ import { View, Text, Image, TextInput,ScrollView, Button, Pressable } from 'reac
 import { MapPinIcon } from "react-native-heroicons/micro";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FunnelIcon,MagnifyingGlassIcon,XMarkIcon } from "react-native-heroicons/mini";
-import {React,useState} from 'react'
+import {React,useState, useEffect} from 'react'
 import Checkbox from 'expo-checkbox';
 import { mockCategoryData } from '../../assets/mockdata/data';
 import { mockEventData } from '../../assets/mockdata/data';
 import CategoryFIlter from '../components/CategoryFIlter';
 import { useNavigation } from '@react-navigation/native'
 import { ArrowLeftCircleIcon } from "react-native-heroicons/outline";
+
+import { getAllEvent } from '../libs/getAllEvent';
 
 export default function AllEventScreen() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,8 +19,14 @@ export default function AllEventScreen() {
   const [dateFilter, setDateFilter] = useState(null);
   const [sizeFilter, setSizeFilter] = useState('');
   const [priceFilter, setPriceFilter] = useState('');
+  const [eventData, setEventData] = useState();
 
   const navigation = useNavigation()
+
+//   useEffect(() => {
+//     getAllEvent().then((data) => setEventData(data));
+//   }, [])
+
 
   const initialpriceState = {
     free : false,
