@@ -13,15 +13,21 @@ export const createEvent = async (event) => {
             price: event.price,
             max_attendee: event.max_attendee,
             category: event.category,
-            
+            location: event.location,
+            longtitude: event.longtitude,
+            latitude: event.latitude,
+            image_url: event.image_url
          },
         {
             headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${API_TOKEN}`,
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${API_TOKEN}`,
             },
         }
         );
         return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 
 }

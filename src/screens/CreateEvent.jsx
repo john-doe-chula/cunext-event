@@ -7,30 +7,47 @@ import {
   ScrollView,
   TextInput,
   Button,
+  StyleSheet
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { schedulePushNotification } from "../hooks/schedulePushNotification";
-import DateTimePicker
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Dropdown } from "react-native-element-dropdown";
+import DropDownPicker from "react-native-dropdown-picker";
+import ImagePickerExample from "../components/ImagePickerComponent";
 
 export default function CreateEvent() {
   const [eventName, setEventName] = useState("");
-  const [eventStartTime, setEventStartTime] = useState("");
-  const [eventEndTime, setEventEndTime] = useState("");
+  const [eventStartTime, setEventStartTime] = useState(null);
+  const [eventEndTime, setEventEndTime] = useState(null);
   const [priceEntry, setPriceEntry] = useState("");
   const [maxAttendee, setMaxAttendee] = useState("");
   const [eventCategory, setEventCategory] = useState("");
   const [eventDescription, setEventDescription] = useState("");
+
+  // Dropdown menu
+  const [isFocus, setIsFocus] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([ 
+    {label: 'Academic', value: 'academic'},
+    {label: 'Concert', value: 'concert'},
+    {label: 'Sport', value: 'sport'},
+    {label: 'Volunteer', value: 'volunteer'},
+    {label: 'MeetUp', value: 'meetup'}
+
+  ]);
 
   return (
     <View className="w-screen h-screen bg-background">
       <ScrollView className="">
         <View className="flex-1 items-center space-y-[5%] w-full h-full px-[2%]">
           <View className="w-full aspect-square mt-16">
-            <Image
+            {/* <Image
               className="w-full h-full rounded-3xl bg-white"
               resizeMethod="resize"
               source={null}
-            />
+              /> */}
+            <ImagePickerExample/>
           </View>
 
           <View className="bg-white w-full rounded-3xl p-4 flex flex-col gap-y-3">
@@ -51,6 +68,10 @@ export default function CreateEvent() {
                 value={eventStartTime}
                 onChangeText={setEventStartTime}
               />
+              {/* <DateTimePicker 
+                  value={eventStartTime || new Date()}
+                  onChange={(e, date) => setEventStartTime(date)}
+              /> */}
             </View>
             <View>
               <Text className="font-semibold text-md">End Time</Text>
@@ -60,6 +81,10 @@ export default function CreateEvent() {
                 value={eventEndTime}
                 onChangeText={setEventEndTime}
               />
+              {/* <DateTimePicker 
+                  value={eventEndTime || new Date()}
+                  onChange={(e, date) => setEventEndTime(date)}
+              /> */}
             </View>
             <View>
               <Text className="font-semibold text-md">Price Entry</Text>
@@ -81,12 +106,29 @@ export default function CreateEvent() {
             </View>
             <View>
               <Text className="font-semibold text-md">Category</Text>
-              <TextInput
+
+              <Dropdown
+                style={styles.dropdown}
+                data={items}
+                maxHeight={300}
+                labelField={"label"}
+                valueField={"value"}
+                placeholder="Academic"
+                value={value}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={(value) => {
+                  setValue(value);
+                  setIsFocus(false);
+                }}
+              />
+
+              {/* <TextInput
                 className="h-10 mt-2 w-full border border-gray-200 px-4 rounded-xl"
                 placeholder="Type your category name here"
                 value={eventCategory}
                 onChangeText={setEventCategory}
-              />
+              /> */}
             </View>
           </View>
           <View className="bg-white w-full rounded-3xl p-4 flex flex-col gap-y-3">
@@ -120,3 +162,44 @@ export default function CreateEvent() {
     </View>
   );
 }
+
+ const styles = StyleSheet.create({
+    container: {
+      backgroundColor: 'white',
+      padding: 16,
+    },
+    dropdown: {
+      height: 50,
+      borderColor: 'gray',
+      borderWidth: 0.5,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+      marginTop: 8,
+    },
+    icon: {
+      marginRight: 5,
+    },
+    label: {
+      position: 'absolute',
+      backgroundColor: 'white',
+      left: 22,
+      top: 8,
+      zIndex: 999,
+      paddingHorizontal: 8,
+      fontSize: 14,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
+  });
