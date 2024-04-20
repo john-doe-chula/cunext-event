@@ -11,14 +11,34 @@ import {
 import { RadioButton } from "react-native-paper";
 import tw from "tailwind-react-native-classnames";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Register({ navigation }) {
+export default function Register() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigation = useNavigation();
   const handleSignInClick = () => {
     navigation.navigate("SignIn");
   };
 
-  const handleRegister = () => {
-    alert("Register in...");
+  const handleRegister = async() => {
+    try{
+      const response = await fetch('https://cunext-event-backend.onrender.com/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: username,
+          password: password,
+        })
+      });
+      if(response.status == 201){
+        navigation.navigate("Interest");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleRegisterWithChula = () => {
@@ -49,6 +69,7 @@ export default function Register({ navigation }) {
             className="h-10 w-72 border border-gray-400 px-4 rounded-xl"
             placeholder="Enter your username"
             autoCapitalize="none"
+            onChangeText={(text) => setUsername(text)}
           />
         </View>
 
@@ -58,6 +79,7 @@ export default function Register({ navigation }) {
             style={tw`h-10 w-72 border border-gray-400 px-4 rounded-xl`}
             placeholder="Enter your password"
             secureTextEntry={true}
+            onChangeText={(text) => setPassword(text)}
           />
         </View>
       </View>
@@ -69,7 +91,7 @@ export default function Register({ navigation }) {
         end={{ x: 1, y: 0 }}
         className="h-10 w-72 rounded-3xl items-center justify-center mt-4"
       >
-        <TouchableOpacity onPress={handleSignInClick}>
+        <TouchableOpacity onPress={handleRegister}>
           <Text style={tw`text-white font-bold`}>Register</Text>
         </TouchableOpacity>
       </LinearGradient>

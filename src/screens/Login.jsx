@@ -11,14 +11,34 @@ import {
 import { RadioButton } from "react-native-paper";
 import tw from "tailwind-react-native-classnames";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
-export default function SignIn({ navigation }) {
+export default function SignIn() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigation = useNavigation();
   const handleSignInClick = () => {
     navigation.navigate("Register"); 
   };
 
-  const handleSignIn = () => {
-    alert("Signing in...");
+  const handleSignIn = async() => {
+    try{
+      const response = await fetch('https://cunext-event-backend.onrender.com/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: username,
+          password: password
+        })
+      });
+      if(response.status == 200){
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSignInWithChula = () => {
@@ -49,6 +69,7 @@ export default function SignIn({ navigation }) {
             className="h-10 w-72 border border-gray-400 px-4 rounded-xl"
             placeholder="Enter your username"
             autoCapitalize="none"
+            onChangeText={(text) => setUsername(text)}
           />
         </View>
 
@@ -58,6 +79,7 @@ export default function SignIn({ navigation }) {
             style={tw`h-10 w-72 border border-gray-400 px-4 rounded-xl`}
             placeholder="Enter your password"
             secureTextEntry={true}
+            onChangeText={(text) => setPassword(text)}
           />
         </View>
 
@@ -80,7 +102,7 @@ export default function SignIn({ navigation }) {
         end={{ x: 1, y: 0 }}
         className="h-10 w-72 rounded-3xl items-center justify-center mt-4"
       >
-        <Text style={tw`text-white font-bold`}>Sign In</Text>
+        <Text style={tw`text-white font-bold`} onPress={handleSignIn}>Sign In</Text>
       </LinearGradient>
 
       <View className="flex flex-row items-center">
