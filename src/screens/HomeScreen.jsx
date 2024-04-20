@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from '@react-navigation/native'
 import {  MagnifyingGlassIcon} from "react-native-heroicons/mini";
 import { schedulePushNotification } from "../hooks/schedulePushNotification";
+import { usePushNotification } from "../hooks/usePushNotification";
 
 export default function HomeScreen() {
   const navigation = useNavigation()
@@ -44,6 +45,8 @@ export default function HomeScreen() {
       description: "งานเทศกาลศิลปะ ประจำปี 2563",
     },
   ];
+
+  const {expoPushToken, notification} = usePushNotification();
 
   return (
     <View className="flex flex-col w-screen h-screen bg-background">
@@ -99,6 +102,7 @@ export default function HomeScreen() {
         </ScrollView>
         <View className="flex flex-row justify-between">
           <Text className="font-bold text-xl mx-4 mt-6 mb-6">New Event</Text>
+          <Button title="Notification" onPress={schedulePushNotification}></Button>
         </View>
         <View className="mx-4 mb-8">
           {/* {eventData.map((event) => (
