@@ -9,6 +9,8 @@ import {
   Button,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { schedulePushNotification } from "../hooks/schedulePushNotification";
+import DateTimePicker
 
 export default function CreateEvent() {
   const [eventName, setEventName] = useState("");
@@ -112,7 +114,7 @@ export default function CreateEvent() {
           end={{ x: 1, y: 0 }}
           className="h-10 w-72 rounded-3xl items-center justify-center"
         >
-          <Text className="text-white font-bold">Create Event</Text>
+          <Text className="text-white font-bold" onPress={() => {schedulePushNotification({title: "New Event Created", body:`${eventName} is created`, seconds: 1})}}>Create Event</Text>
         </LinearGradient>
       </View>
     </View>
